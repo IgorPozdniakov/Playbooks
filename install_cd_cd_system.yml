@@ -1,0 +1,41 @@
+---
+  - hosts: all
+    become: yes
+    tasks:
+      - name: Copy docker script for Ubuntu 18.04
+        copy:
+          src: /home/user/ansible/playbooks/instll_ci_cd_ubuntu.sh
+          dest: /home/instll_ci_cd_ubuntu.sh
+          mode: u=rwx,g=rx,o=rx
+        when: ansible_os_family == 'Debian'
+
+      - name: Run installation script
+        shell: /home/instll_ci_cd_ubuntu.sh
+        when: ansible_os_family == "Debian"
+
+      - name: Delete installation script
+        file:
+          path: /home/instll_ci_cd_ubuntu.sh
+          state: absent
+        when: ansible_os_family == "Debian"
+
+
+
+
+      - name: Copy docker script for AmazonLinux
+        copy:
+          src: /home/user/ansible/playbooks/instll_cd_cd_redhat.sh
+          dest: /home/instll_cd_cd_redhat.sh
+          mode: u=rwx,g=rx,o=rx
+        when: ansible_os_family == 'RedHat'
+
+      - name: Run installation script
+        shell: /home/instll_cd_cd_redhat.sh
+        when: ansible_os_family == "RedHat"
+
+      - name: Delete installation script
+        file:
+          path: /home/instll_cd_cd_redhat.sh
+          state: absent
+        when: ansible_os_family == "RedHat"
+
